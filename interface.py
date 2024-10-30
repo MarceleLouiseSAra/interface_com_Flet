@@ -223,47 +223,62 @@ def main(page = Page):
                 circle,
                 Text('João\nPirajá', size = 32, weight = 'bold', color = LIGHTSTEELBLUE),
                 Container(
-                    height = 2
-                ),
-                Row(
-                    controls = [
-                        Icon(icons.ACCOUNT_CIRCLE_ROUNDED, color = LIGHTSTEELBLUE),
-                        Text(
-                            'Minha conta',
-                            color = LIGHTSTEELBLUE,
-                            weight = FontWeight.W_300,
-                            font_family = 'poppins'
-                        )
-                    ]
+                    height = 5
                 ),
                 Container(
-                    height = 2,
+                    content = Column(
+                        controls = [
+                            Row(
+                                controls = [
+                                    Container(
+                                        on_click = lambda _: page.go('/create_tuition'),
+                                        content = Icon(icons.ACCOUNT_CIRCLE_ROUNDED, color = LIGHTSTEELBLUE)
+                                    ),
+                                    Text(
+                                        'Minha conta',
+                                        color = LIGHTSTEELBLUE,
+                                        weight = FontWeight.W_300,
+                                        font_family = 'poppins'
+                                    )
+                                ]
+                            ),
+                            Container(
+                                height = 2,
+                            ),
+                            Row(
+                                controls = [
+                                    Container(
+                                        on_click = lambda _: page.go('/create_tuition'),
+                                        content = Icon(icons.FAVORITE_BORDER_ROUNDED, color = LIGHTSTEELBLUE)
+                                    ),
+                                    Text(
+                                        'Templates',
+                                        color = LIGHTSTEELBLUE,
+                                        weight = FontWeight.W_300,
+                                        font_family = 'poppins'
+                                    )
+                                ]
+                            ),
+                            Container(
+                                height = 2,
+                            ),
+                            Row(
+                                controls = [
+                                    Container(
+                                        on_click = lambda _: page.go('/create_tuition'),
+                                        content = Icon(icons.ADMIN_PANEL_SETTINGS_ROUNDED, color = LIGHTSTEELBLUE),
+                                    ),
+                                        Text(
+                                            'Configurações',
+                                            color = LIGHTSTEELBLUE,
+                                            weight = FontWeight.W_300,
+                                            font_family = 'poppins',
+                                        )
+                                ]
+                            )
+                        ]
+                    )
                 ),
-                Row(
-                    controls = [
-                        Icon(icons.FAVORITE_BORDER_ROUNDED, color = LIGHTSTEELBLUE),
-                        Text(
-                            'Templates',
-                            color = LIGHTSTEELBLUE,
-                            weight = FontWeight.W_300,
-                            font_family = 'poppins'
-                        )
-                    ]
-                ),
-                Container(
-                    height = 2,
-                ),
-                Row(
-                    controls = [
-                        Icon(icons.ADMIN_PANEL_SETTINGS_ROUNDED, color = LIGHTSTEELBLUE),
-                        Text(
-                            'Configurações',
-                            color = LIGHTSTEELBLUE,
-                            weight = FontWeight.W_300,
-                            font_family = 'poppins'
-                        )
-                    ]
-                ) # to-do: fazer dessas abas clicáveis
             ]
         )
     )
