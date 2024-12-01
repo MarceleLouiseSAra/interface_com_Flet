@@ -168,35 +168,52 @@ def main(page: Page):
 
         content = Column(
             controls = [
-                Row([
+                Column([
                     Container(
-                        width = 150,
-                        content = TextButton(
-                            "Criar conta",
-                            style = ButtonStyle(
-                                color = DEEPBLUE,
-                                bgcolor = LIGHTBLUE
-                            ),
-                            on_click = lambda _: page.go('/sign_in_page'),
+                        content = Text(
+                            value = "fazAConta", 
+                            size = 28, 
+                            weight = 'bold', 
+                            color = LIGHTBLUE
                         ),
+                        margin = margin.only(top = 100, left = 35)
                     ),
-                    Container(
-                        width = 150,
-                        content = TextButton(
-                            "Entrar",
-                            style = ButtonStyle(
-                                color = DEEPBLUE,
-                                bgcolor = LIGHTBLUE
+                    Row([
+                        Container(
+                            width = 150,
+                            content = TextButton(
+                                "Criar conta",
+                                style = ButtonStyle(
+                                    bgcolor = MEDIUMBLUE,
+                                    color = {
+                                        ControlState.HOVERED: WHITE,
+                                        ControlState.FOCUSED: MEDIUMBLUE,
+                                        ControlState.DEFAULT: DEEPBLUE,
+                                    }
+                                ),
+                                on_click = lambda _: page.go('/sign_in_page'),
                             ),
-                            on_click = lambda _: page.go('/log_in_page'),
+                            margin = margin.only(top = 400, left = 35)
                         ),
-                    ),
-                ],
-                alignment = 'spaceBetween'
-                )
+                        Container(
+                            width = 150,
+                            content = TextButton(
+                                "Entrar",
+                                style = ButtonStyle(
+                                    bgcolor = MEDIUMBLUE,
+                                    color = {
+                                        ControlState.HOVERED: WHITE,
+                                        ControlState.FOCUSED: MEDIUMBLUE,
+                                        ControlState.DEFAULT: DEEPBLUE,
+                                    }
+                                ),
+                                on_click = lambda _: page.go('/log_in_page'),
+                            ),
+                            margin = margin.only(top = 400, left = 5)
+                        )
+                    ])
+                ])
             ],
-            alignment = MainAxisAlignment.CENTER,
-
         )
     )
 
@@ -301,8 +318,12 @@ def main(page: Page):
                     content = TextButton(
                         "Entrar",
                         style = ButtonStyle(
-                            color = PINK,
-                            bgcolor = DEEPBLUE
+                            color = {
+                                ControlState.HOVERED: LIGHTBLUE,
+                                ControlState.FOCUSED: WHITE,
+                                ControlState.DEFAULT: PINK,
+                            },
+                            bgcolor = MEDIUMBLUE
                         ),
                         on_click = lambda _: page.go('/home_page')
                     )
@@ -433,8 +454,12 @@ def main(page: Page):
                     content = TextButton(
                         "Criar conta",
                         style = ButtonStyle(
-                            color = PINK,
-                            bgcolor = DEEPBLUE
+                            color = {
+                                ControlState.HOVERED: LIGHTBLUE,
+                                ControlState.FOCUSED: WHITE,
+                                ControlState.DEFAULT: PINK,
+                            },
+                            bgcolor = MEDIUMBLUE
                         )
                     )
                 )
@@ -556,7 +581,7 @@ def main(page: Page):
                             Row(
                                 controls = [
                                     Container(
-                                        on_click = lambda _: page.go('/create_tuition'),
+                                        on_click = lambda _: page.go('/'),
                                         content = Icon(icons.ACCOUNT_CIRCLE_ROUNDED, color = LIGHTBLUE)
                                     ),
                                     Text(
@@ -567,30 +592,10 @@ def main(page: Page):
                                     )
                                 ]
                             ),
-                            Container(
-                                height = 2,
-                            ),
                             Row(
                                 controls = [
                                     Container(
-                                        on_click = lambda _: page.go('/create_tuition'),
-                                        content = Icon(icons.FAVORITE_BORDER_ROUNDED, color = LIGHTBLUE)
-                                    ),
-                                    Text(
-                                        'Templates',
-                                        color = LIGHTBLUE,
-                                        weight = FontWeight.W_300,
-                                        font_family = 'poppins'
-                                    )
-                                ]
-                            ),
-                            Container(
-                                height = 2,
-                            ),
-                            Row(
-                                controls = [
-                                    Container(
-                                        on_click = lambda _: page.go('/create_tuition'),
+                                        on_click = lambda _: page.go('/'),
                                         content = Icon(icons.ADMIN_PANEL_SETTINGS_ROUNDED, color = LIGHTBLUE),
                                     ),
                                         Text(
@@ -600,7 +605,21 @@ def main(page: Page):
                                             font_family = 'poppins',
                                         )
                                 ]
-                            )
+                            ),
+                            Row(
+                                controls = [
+                                    Container(
+                                        on_click = lambda _: page.go('/'),
+                                        content = Icon(icons.ARROW_BACK_IOS_NEW_ROUNDED, color = LIGHTBLUE)
+                                    ),
+                                    Text(
+                                        'Sair',
+                                        color = LIGHTBLUE,
+                                        weight = FontWeight.W_300,
+                                        font_family = 'poppins'
+                                    )
+                                ]
+                            ),
                         ]
                     )
                 ),
@@ -623,28 +642,128 @@ def main(page: Page):
     )
 
     create_tuition_view = Container(
-        content =
-         Container(
-            height = 850,
+        width = 400,
+        height = 850,
+        bgcolor = DEEPBLUE,
+        border_radius = 20,
+        margin = 10,
+        padding = 10,
+        alignment = alignment.center,
+
+        content = Column(
             width = 400,
-            bgcolor = DEEPBLUE,
-            border_radius = 20,
-            content = Column(
-                controls = [
-                    Stack(
-                        controls = [
-                            FloatingActionButton(
-                                top = 20,
-                                left = 20,
-                                icon = icons.HOME, 
-                                on_click = lambda _: page.go('/'),
-                                bgcolor = LIGHTBLUE
-                            ),
-                        ]
+            controls = [
+                Container(
+                    FloatingActionButton(
+                        top = 20,
+                        left = 20,
+                        icon = icons.HOME, 
+                        on_click = lambda _: page.go('/home_page'),
+                        bgcolor = LIGHTBLUE
                     ),
-                ]
-            )
-         )
+                ),
+                Container(
+                    width = 400,
+                    margin = margin.only(left = 90, right = 10, top = 40),
+                    content = Text(
+                        "Criar despesa",
+                        size = 30,
+                        color = LIGHTBLUE,
+                        weight = 'w700'
+                    )
+                ),
+                Container(
+                    width = 400,
+                    margin = margin.only(left = 10, right = 10, top = 30),
+                    alignment = alignment.center,
+                    content = Text(
+                        "Por favor, preencha as informações a seguir:",
+                        size = 16,
+                        color = LIGHTBLUE,
+                        text_align = "center"
+                    )
+                ),
+                Container(
+                    width = 400,
+                    margin = margin.only(left = 20, right = 20, top = 30),
+                    content = Column(
+                        controls = [
+                            TextField(
+                                label = "Nome de usuário",
+                                hint_text = "Insira aqui o seu nome de usuário: ",
+                                border_color = MEDIUMBLUE,
+                                text_style = TextStyle(
+                                    color = MEDIUMBLUE
+                                ),
+                                focused_border_color = PINK
+                            )
+                        ]
+                    )
+                ),
+                Container(
+                    width = 400,
+                    margin = margin.only(left = 20, right = 20, top = 15),
+                    content = Column(
+                        controls = [
+                            TextField(
+                                label = "E-mail",
+                                hint_text = "Insira aqui o seu e-mail: ",
+                                border_color = MEDIUMBLUE,
+                                text_style = TextStyle(
+                                    color = MEDIUMBLUE
+                                ),
+                                focused_border_color = PINK
+                            )
+                        ]
+                    )
+                ),
+                Container(
+                    width = 400,
+                    margin = margin.only(left = 20, right = 20, top = 15),
+                    content = Column(
+                        controls = [
+                            TextField(
+                                label = "Senha",
+                                hint_text = "Insira a sua senha aqui: ",
+                                password = True,
+                                can_reveal_password = True,
+                                border_color = MEDIUMBLUE,
+                                text_style = TextStyle(
+                                    color = MEDIUMBLUE
+                                ),
+                                focused_border_color = PINK
+                            ),
+                            TextField(
+                                label = "Confirmar senha",
+                                hint_text = "Insira a novamente a senha: ",
+                                password = True,
+                                can_reveal_password = False,
+                                border_color = MEDIUMBLUE,
+                                text_style = TextStyle(
+                                    color = MEDIUMBLUE
+                                ),
+                                focused_border_color = PINK
+                            )
+                        ]
+                    )
+                ),
+                Container(
+                    width = 120,
+                    margin = margin.only(left = 130, right = 20, top = 10),
+                    content = TextButton(
+                        "Criar despesa",
+                        style = ButtonStyle(
+                            color = {
+                                ControlState.HOVERED: LIGHTBLUE,
+                                ControlState.FOCUSED: WHITE,
+                                ControlState.DEFAULT: PINK,
+                            },
+                            bgcolor = MEDIUMBLUE
+                        )
+                    )
+                )
+            ]
+        )
     )
 
     pages = {
