@@ -116,36 +116,21 @@ def main(page: Page):
 
     groups = ['Trabalho', 'Família', 'Amigos'] # fazer disso um dicionário?, importar da db?
 
-    def groups_dropDown():
-        for group in groups:
-            Dropdown(
-                options = [
-                    dropdown.Option(groups[group])
-                ]
-            )
-
-    fruits = [
-        "Apple",
-        "Mango",
-        "Banana",
-        "Orange",
-        "Pineapple",
-        "Strawberry",
-    ]
-
-    selected_fruit_ref = Ref[Text]()
+    selected_group_ref = Ref[Text]()
 
     def handle_picker_change(e):
-        selected_fruit_ref.current.value = fruits[int(e.data)]
+        selected_group_ref.current.value = groups[int(e.data)]
         page.update()
 
     cupertino_picker = CupertinoPicker(
-        selected_index=3,
-        magnification=1.22,
-        squeeze=1.2,
-        use_magnifier=True,
-        on_change=handle_picker_change,
-        controls=[Text(value=f) for f in fruits],
+        selected_index = 2,
+        magnification = 1.22,
+        squeeze = 1.2,
+        use_magnifier = True,
+        on_change = handle_picker_change,
+        controls = [
+            Text(value = group) for group in groups
+        ],
     )
 
     for group in groups:
@@ -730,27 +715,32 @@ def main(page: Page):
                 Container(
                     padding = padding.only(top = 10),
                     content = Column(
-                        # controls = [
-                        #     TextField(
-                        #         label = "",
-                        #         hint_text = "",
-                        #         border_color = MEDIUMBLUE,
-                        #         text_style = TextStyle(
-                        #             color = MEDIUMBLUE
-                        #         ),
-                        #         focused_border_color = PINK
-                        #     ),
-                        # ]
+                        controls = [
+                            TextField(
+                                label = "Valor da despesa",
+                                hint_text = "Quanto esta despesa custou?: ",
+                                border_color = MEDIUMBLUE,
+                                text_style = TextStyle(
+                                    color = MEDIUMBLUE
+                                ),
+                                focused_border_color = PINK
+                            )
+                        ]
+                    )
+                ),
+                Container(
+                    padding = padding.only(top = 10),
+                    content = Column(
                         controls=[
-                            Text("Selected Fruit:", size=23),
+                            Text("Grupo da despesa:", size=23),
                             TextButton(
-                                content=Text(value=fruits[3], ref=selected_fruit_ref, size=23),
-                                style=ButtonStyle(color= MEDIUMBLUE),
-                                on_click=lambda e: page.open(
+                                content = Text(value = groups[2], ref = selected_group_ref, size = 20),
+                                style = ButtonStyle(color = MEDIUMBLUE),
+                                on_click = lambda e: page.open(
                                     CupertinoBottomSheet(
                                         cupertino_picker,
-                                        height=216,
-                                        padding=padding.only(top=6),
+                                        height = 216,
+                                        padding = padding.only(top=6),
                                     )
                                 ),
                             ),
