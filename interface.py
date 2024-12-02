@@ -702,7 +702,7 @@ def main(page: Page):
                         controls = [
                             TextField(
                                 label = "Nome da despesa",
-                                hint_text = "Insira aqui o seu nome de usuário: ",
+                                hint_text = "Insira aqui o nome da despesa: ",
                                 border_color = MEDIUMBLUE,
                                 text_style = TextStyle(
                                     color = MEDIUMBLUE
@@ -732,9 +732,9 @@ def main(page: Page):
                     padding = padding.only(top = 10),
                     content = Column(
                         controls=[
-                            Text("Grupo da despesa:", size=23),
+                            Text("Grupo da despesa:", size = 16),
                             TextButton(
-                                content = Text(value = groups[2], ref = selected_group_ref, size = 20),
+                                content = Text(value = groups[2], ref = selected_group_ref, size = 16),
                                 style = ButtonStyle(color = MEDIUMBLUE),
                                 on_click = lambda e: page.open(
                                     CupertinoBottomSheet(
