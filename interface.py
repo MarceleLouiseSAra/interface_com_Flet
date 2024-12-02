@@ -116,6 +116,38 @@ def main(page: Page):
 
     groups = ['Trabalho', 'Família', 'Amigos'] # fazer disso um dicionário?, importar da db?
 
+    def groups_dropDown():
+        for group in groups:
+            Dropdown(
+                options = [
+                    dropdown.Option(groups[group])
+                ]
+            )
+
+    fruits = [
+        "Apple",
+        "Mango",
+        "Banana",
+        "Orange",
+        "Pineapple",
+        "Strawberry",
+    ]
+
+    selected_fruit_ref = Ref[Text]()
+
+    def handle_picker_change(e):
+        selected_fruit_ref.current.value = fruits[int(e.data)]
+        page.update()
+
+    cupertino_picker = CupertinoPicker(
+        selected_index=3,
+        magnification=1.22,
+        squeeze=1.2,
+        use_magnifier=True,
+        on_change=handle_picker_change,
+        controls=[Text(value=f) for f in fruits],
+    )
+
     for group in groups:
         groups_card.controls.append(
             Container(
@@ -508,7 +540,7 @@ def main(page: Page):
                             bottom = 2,
                             right = 20,
                             icon = icons.ADD, 
-                            on_click = lambda _: page.go('/create_tuition'),
+                            on_click = lambda _: page.go('/create_tuition_page'),
                             bgcolor = LIGHTBLUE
                         )
                     ]
@@ -641,30 +673,27 @@ def main(page: Page):
         )
     )
 
-    create_tuition_view = Container(
+    create_tuition_page = Container(
         width = 400,
         height = 850,
         bgcolor = DEEPBLUE,
         border_radius = 20,
-        margin = 10,
-        padding = 10,
-        alignment = alignment.center,
+        padding = padding.only(left = 30, top = 30, right = 30),
 
         content = Column(
-            width = 400,
             controls = [
-                Container(
-                    FloatingActionButton(
-                        top = 20,
-                        left = 20,
-                        icon = icons.HOME, 
-                        on_click = lambda _: page.go('/home_page'),
-                        bgcolor = LIGHTBLUE
-                    ),
+                Stack(
+                    controls = [
+                        FloatingActionButton(
+                            icon = icons.HOME, 
+                            on_click = lambda _: page.go('/home_page'),
+                            bgcolor = LIGHTBLUE
+                        )
+                    ],
                 ),
                 Container(
-                    width = 400,
-                    margin = margin.only(left = 90, right = 10, top = 40),
+                    alignment = alignment.center,
+                    padding = padding.only(top = 30),
                     content = Text(
                         "Criar despesa",
                         size = 30,
@@ -673,9 +702,8 @@ def main(page: Page):
                     )
                 ),
                 Container(
-                    width = 400,
-                    margin = margin.only(left = 10, right = 10, top = 30),
                     alignment = alignment.center,
+                    padding = padding.only(top = 15),
                     content = Text(
                         "Por favor, preencha as informações a seguir:",
                         size = 16,
@@ -684,12 +712,11 @@ def main(page: Page):
                     )
                 ),
                 Container(
-                    width = 400,
-                    margin = margin.only(left = 20, right = 20, top = 30),
+                    padding = padding.only(top = 10),
                     content = Column(
                         controls = [
                             TextField(
-                                label = "Nome de usuário",
+                                label = "Nome da despesa",
                                 hint_text = "Insira aqui o seu nome de usuário: ",
                                 border_color = MEDIUMBLUE,
                                 text_style = TextStyle(
@@ -701,25 +728,37 @@ def main(page: Page):
                     )
                 ),
                 Container(
-                    width = 400,
-                    margin = margin.only(left = 20, right = 20, top = 15),
+                    padding = padding.only(top = 10),
                     content = Column(
-                        controls = [
-                            TextField(
-                                label = "E-mail",
-                                hint_text = "Insira aqui o seu e-mail: ",
-                                border_color = MEDIUMBLUE,
-                                text_style = TextStyle(
-                                    color = MEDIUMBLUE
+                        # controls = [
+                        #     TextField(
+                        #         label = "",
+                        #         hint_text = "",
+                        #         border_color = MEDIUMBLUE,
+                        #         text_style = TextStyle(
+                        #             color = MEDIUMBLUE
+                        #         ),
+                        #         focused_border_color = PINK
+                        #     ),
+                        # ]
+                        controls=[
+                            Text("Selected Fruit:", size=23),
+                            TextButton(
+                                content=Text(value=fruits[3], ref=selected_fruit_ref, size=23),
+                                style=ButtonStyle(color= MEDIUMBLUE),
+                                on_click=lambda e: page.open(
+                                    CupertinoBottomSheet(
+                                        cupertino_picker,
+                                        height=216,
+                                        padding=padding.only(top=6),
+                                    )
                                 ),
-                                focused_border_color = PINK
-                            )
-                        ]
+                            ),
+                        ],
                     )
                 ),
                 Container(
-                    width = 400,
-                    margin = margin.only(left = 20, right = 20, top = 15),
+                    padding = padding.only(top = 10),
                     content = Column(
                         controls = [
                             TextField(
@@ -732,24 +771,13 @@ def main(page: Page):
                                     color = MEDIUMBLUE
                                 ),
                                 focused_border_color = PINK
-                            ),
-                            TextField(
-                                label = "Confirmar senha",
-                                hint_text = "Insira a novamente a senha: ",
-                                password = True,
-                                can_reveal_password = False,
-                                border_color = MEDIUMBLUE,
-                                text_style = TextStyle(
-                                    color = MEDIUMBLUE
-                                ),
-                                focused_border_color = PINK
                             )
                         ]
                     )
                 ),
                 Container(
-                    width = 120,
-                    margin = margin.only(left = 130, right = 20, top = 10),
+                    alignment = alignment.center,
+                    padding = padding.only(top = 10),
                     content = TextButton(
                         "Criar despesa",
                         style = ButtonStyle(
@@ -772,7 +800,7 @@ def main(page: Page):
         '/log_in_page': View("/log_in_page", [log_in_page]),
         '/sign_in_page': View("/sign_in_page", [sign_in_page]),
         '/home_page': View("/home_page", [home_page]),
-        '/create_tuition': View("/create_tuition", [create_tuition_view])
+        '/create_tuition_page': View("/create_tuition_page", [create_tuition_page])
     }
 
     def route_change(route):
