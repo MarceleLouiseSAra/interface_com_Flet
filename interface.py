@@ -3,18 +3,18 @@ from flet import *
 from custom_checkbox import CustomCheckBox
 import requests
 
-def request_data(event):
-    r = requests.get('http://localhost:8000/')
-    print(r.json())
+# def request_data(event):
+#     r = requests.post('http://localhost:8000/users')
+#     print(r.json())
 
 def main(page: Page):
     
     page.title = "aplicativo muito massa"
     page.theme_mode = 'dark'
 
-    DEEPBLUE = '#041955'
-    MEDIUMBLUE = '#3450a1'
-    PINK = '#eb06ff'
+    DEEPBLUE = '#432350'
+    MEDIUMBLUE = '#b476ff'
+    PINK = '#f4c9fd'
     WHITE = '#ffffff'
     LIGHTBLUE = '#B0C4DE'
 
@@ -40,6 +40,8 @@ def main(page: Page):
             alignment = alignment.center_right
         )
         home_page_1.update()
+
+
 
     circle = Stack(
         controls = [
@@ -118,21 +120,6 @@ def main(page: Page):
 
     selected_group_ref = Ref[Text]()
 
-    def handle_picker_change(e):
-        selected_group_ref.current.value = groups[int(e.data)]
-        page.update()
-
-    cupertino_picker = CupertinoPicker(
-        selected_index = 2,
-        magnification = 1.22,
-        squeeze = 1.2,
-        use_magnifier = True,
-        on_change = handle_picker_change,
-        controls = [
-            Text(value = group) for group in groups
-        ],
-    )
-
     for group in groups:
         groups_card.controls.append(
             Container(
@@ -166,13 +153,6 @@ def main(page: Page):
                 )
             )
         )
-
-    welcome_page = Container(
-        width = 400,
-        height = 850,
-        bgcolor = LIGHTBLUE,
-        border_radius = 20,
-    )
 
     waiting_room_page = Container(
         width = 400,
@@ -349,6 +329,53 @@ def main(page: Page):
         )
     )
 
+    user_name_field = TextField(
+        label = "Nome de usuário",
+        hint_text = "Insira aqui o seu nome de usuário: ",
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = MEDIUMBLUE
+        ),
+        focused_border_color = PINK
+    )
+    email_field = TextField(
+        label = "E-mail",
+        hint_text = "Insira aqui o seu e-mail: ",
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = MEDIUMBLUE
+        ),
+        focused_border_color = PINK
+    )
+    password_field = TextField(
+        label = "Senha",
+        hint_text = "Insira a sua senha aqui: ",
+        password = True,
+        can_reveal_password = True,
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = MEDIUMBLUE
+        ),
+        focused_border_color = PINK
+    )
+
+
+    def request_data(event):
+        user_name = user_name_field.value
+        email = email_field.value
+        password = password_field.value
+        
+
+        body = {
+            "user_name": user_name,
+            "email": email,
+            "password": password
+        }
+        r = requests.post('http://localhost:8000/users', data=body)
+        print(r.json())
+
+
+
     sign_in_page = Container(
         width = 400,
         height = 850,
@@ -405,17 +432,14 @@ def main(page: Page):
                     width = 400,
                     margin = margin.only(left = 20, right = 20, top = 30),
                     content = Column(
-                        controls = [
-                            TextField(
-                                label = "Nome de usuário",
-                                hint_text = "Insira aqui o seu nome de usuário: ",
-                                border_color = MEDIUMBLUE,
-                                text_style = TextStyle(
-                                    color = MEDIUMBLUE
-                                ),
-                                focused_border_color = PINK
-                            )
-                        ]
+                        controls = [user_name_field]
+                    )
+                ),
+                Container(
+                    width = 400,
+                    margin = margin.only(left = 20, right = 20, top = 15),
+                    content = Column(
+                        controls = [email_field]
                     )
                 ),
                 Container(
@@ -423,34 +447,7 @@ def main(page: Page):
                     margin = margin.only(left = 20, right = 20, top = 15),
                     content = Column(
                         controls = [
-                            TextField(
-                                label = "E-mail",
-                                hint_text = "Insira aqui o seu e-mail: ",
-                                border_color = MEDIUMBLUE,
-                                text_style = TextStyle(
-                                    color = MEDIUMBLUE
-                                ),
-                                focused_border_color = PINK
-                            )
-                        ]
-                    )
-                ),
-                Container(
-                    width = 400,
-                    margin = margin.only(left = 20, right = 20, top = 15),
-                    content = Column(
-                        controls = [
-                            TextField(
-                                label = "Senha",
-                                hint_text = "Insira a sua senha aqui: ",
-                                password = True,
-                                can_reveal_password = True,
-                                border_color = MEDIUMBLUE,
-                                text_style = TextStyle(
-                                    color = MEDIUMBLUE
-                                ),
-                                focused_border_color = PINK
-                            ),
+                            password_field,
                             TextField(
                                 label = "Confirmar senha",
                                 hint_text = "Insira a novamente a senha: ",
@@ -477,7 +474,8 @@ def main(page: Page):
                                 ControlState.DEFAULT: PINK,
                             },
                             bgcolor = MEDIUMBLUE
-                        )
+                        ),
+                        on_click = lambda e: request_data(e)
                     )
                 )
             ]
@@ -526,6 +524,7 @@ def main(page: Page):
                             right = 20,
                             icon = icons.ADD, 
                             on_click = lambda _: page.go('/create_tuition_page'),
+                            # on_click = lambda e: alertDialog(page),
                             bgcolor = LIGHTBLUE
                         )
                     ]
@@ -728,25 +727,25 @@ def main(page: Page):
                         ]
                     )
                 ),
-                Container(
-                    padding = padding.only(top = 10),
-                    content = Column(
-                        controls=[
-                            Text("Grupo da despesa:", size = 16),
-                            TextButton(
-                                content = Text(value = groups[2], ref = selected_group_ref, size = 16),
-                                style = ButtonStyle(color = MEDIUMBLUE),
-                                on_click = lambda e: page.open(
-                                    CupertinoBottomSheet(
-                                        cupertino_picker,
-                                        height = 216,
-                                        padding = padding.only(top=6),
-                                    )
-                                ),
-                            ),
-                        ],
-                    )
-                ),
+                # Container(
+                #     padding = padding.only(top = 10),
+                #     content = Column(
+                #         controls=[
+                #             Text("Grupo da despesa:", size = 16),
+                #             TextButton(
+                #                 content = Text(value = groups[2], ref = selected_group_ref, size = 16),
+                #                 style = ButtonStyle(color = MEDIUMBLUE),
+                #                 on_click = lambda e: page.open(
+                #                     CupertinoBottomSheet(
+                #                         cupertino_picker,
+                #                         height = 216,
+                #                         padding = padding.only(top=6),
+                #                     )
+                #                 ),
+                #             ),
+                #         ],
+                #     )
+                # ),
                 Container(
                     padding = padding.only(top = 10),
                     content = Column(
@@ -777,7 +776,8 @@ def main(page: Page):
                                 ControlState.DEFAULT: PINK,
                             },
                             bgcolor = MEDIUMBLUE
-                        )
+                        ),
+                        # on_click = lambda e: inserirDados(e)
                     )
                 )
             ]
@@ -785,7 +785,6 @@ def main(page: Page):
     )
 
     pages = {
-        # '/': View("/welcome_page", [welcome_page]),
         '/': View("/waiting_room_page", [waiting_room_page]),
         '/log_in_page': View("/log_in_page", [log_in_page]),
         '/sign_in_page': View("/sign_in_page", [sign_in_page]),
