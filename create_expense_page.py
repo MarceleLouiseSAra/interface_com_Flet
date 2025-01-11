@@ -1,5 +1,6 @@
 from flet import *
 from custom_checkbox import CustomCheckBox
+import requests
 
 DEEPBLUE = '#432350'
 MEDIUMBLUE = '#b476ff'
@@ -83,6 +84,20 @@ def view_create_expense_page(page: Page) -> Container:
         focused_border_color = PINK
     )  # Campo de texto para inserir o nome da despesa
 
+    def on_submit(e): # análogo ao request_data
+        page.go('/expense_page')
+
+    def request_data(e):
+        expense_name = expense_input.value
+        
+        body = {
+            "expense_name": expense_name
+        }
+
+        r = requests.post('http://localhost:8000/users', data = body)
+        print(r.json())
+        page.go('/expense_page')
+
     submit_button = Container(
                         margin = margin.only(left = 115, right = 0, top = 30),
                         content = TextButton(
@@ -95,10 +110,10 @@ def view_create_expense_page(page: Page) -> Container:
                                 },
                                 bgcolor = MEDIUMBLUE,
                             ),
-                            on_click = lambda _: page.go('/expense_page')
+                            on_click = lambda e: on_submit(e) # substituir pelo request_data
                         )
                     )
-        
+
     create_expense_page = Container(
         width = 400,
         height = 850,

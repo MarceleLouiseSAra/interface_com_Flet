@@ -11,7 +11,6 @@ page: Page
 
 def view_log_in_page(page: Page) -> Container:
 
-
     username_input = TextField(
         label = "Usuário", 
         hint_text = "Insira aqui o nome de usuário: ",
