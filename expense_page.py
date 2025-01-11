@@ -12,7 +12,7 @@ page: Page
 def view_expense_page(page: Page) -> Container:
 
     def on_submit(e):
-        print("Partipantes", participants)
+        print("Partipantes:", participants)
         
     submit_button = Container(
         content = Column(
@@ -20,6 +20,8 @@ def view_expense_page(page: Page) -> Container:
                 Stack(
                     controls = [
                         FloatingActionButton(
+                            top = 100,
+                            left = 170,
                             icon = icons.ADD, 
                             on_click = lambda e: on_submit(e),
                             bgcolor = LIGHTBLUE
@@ -30,9 +32,19 @@ def view_expense_page(page: Page) -> Container:
         )
     )
 
-    expenses_n_balance_layer = Container()
+    expenses_layer = Container(
+        width = 100,
+        height = 100,
+        bgcolor = WHITE,
+        border_radius = 20,
+    )
 
-    add_expense = Container()
+    balance_layer = Container(
+        width = 100,
+        height = 100,
+        bgcolor = MEDIUMBLUE,
+        border_radius = 20,
+    )
 
     expense_page = Container(
         width = 400,
@@ -42,7 +54,28 @@ def view_expense_page(page: Page) -> Container:
 
         content = Column(
             controls = [
-                submit_button
+                Row([
+                    Container(
+                        Icon(icons.ARROW_BACK_IOS_NEW_ROUNDED, color = LIGHTBLUE),
+                        margin = margin.only(left = 15, right = 10, top = 30),
+                        on_click = lambda _: page.go('/create_expense_page'),
+                    ),
+                    Container(
+                        margin = margin.only(left = 30, right = 10, top = 30),
+                        content = Text(
+                            "nome da despesa",
+                            size = 28,
+                            color = LIGHTBLUE,
+                            weight = 'w700'
+                        )
+                    ),
+                ]),
+                Row([
+                    expenses_layer,
+                    balance_layer,
+                ]),
+                Container(),
+                submit_button,
             ] 
         )
     )

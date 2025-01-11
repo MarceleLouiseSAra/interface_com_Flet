@@ -5,6 +5,7 @@ from sign_in_page import view_sign_in_page
 from home_page import view_home_page
 from create_expense_page import view_create_expense_page
 from expense_page import view_expense_page
+from add_expense_page import view_add_expense_page
 
 def main(page: Page):
 
@@ -17,6 +18,7 @@ def main(page: Page):
     home_page = view_home_page(page)
     create_expense_page = view_create_expense_page(page)
     expense_page = view_expense_page(page)
+    add_expense_page = view_add_expense_page(page)
 
     pages = {
         '/': View("/waiting_room_page", [waiting_room_page]),
@@ -25,6 +27,7 @@ def main(page: Page):
         '/home_page': View("/home_page", [home_page]),
         '/create_expense_page': View("/create_expense_page", [create_expense_page]),
         '/expense_page': View("/expense_page", [expense_page]),
+        '/add_expense_page': View("/add_expense_page", [add_expense_page]),
     }
 
     def route_change(route):

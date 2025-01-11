@@ -30,6 +30,7 @@ def view_create_expense_page(page: Page) -> Container:
     )  # Campo de texto para inserir partipantes
 
     def addParticipante(e):
+
         item = partipant_input.value.strip()
         if item:  # Verifica se o item não está vazio
             participants.append(item)  # Adiciona o item à lista
@@ -70,6 +71,17 @@ def view_create_expense_page(page: Page) -> Container:
             on_click = lambda e: addParticipante(e)
         )
     )
+
+    expense_input = TextField(
+        label = "Nome da despesa",
+        hint_text = "Insira aqui o nome da despesa: ",
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = LIGHTBLUE
+        ),
+        autofocus = True,
+        focused_border_color = PINK
+    )  # Campo de texto para inserir o nome da despesa
 
     submit_button = Container(
                         margin = margin.only(left = 115, right = 0, top = 30),
@@ -116,16 +128,8 @@ def view_create_expense_page(page: Page) -> Container:
                     margin = margin.only(left = 15, right = 10, top = 15),
                     content = Column(
                         controls = [
-                        TextField(
-                            label = "Nome da despesa",
-                            hint_text = "Insira aqui o nome da despesa: ",
-                            border_color = MEDIUMBLUE,
-                            text_style = TextStyle(
-                                color = MEDIUMBLUE
-                            ),
-                            focused_border_color = PINK
-                        )
-                    ]
+                            expense_input
+                        ]
                     )
                 ),
                 Container(
