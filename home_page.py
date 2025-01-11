@@ -12,27 +12,27 @@ page: Page
 def view_home_page(page: Page) -> Container:
 
     def shrink(e):
-            home_page_1.controls[0].width = 200
-            home_page_1.controls[0].scale = transform.Scale(
+            side_bar.controls[0].width = 200
+            side_bar.controls[0].scale = transform.Scale(
                 0.8,
                 alignment = alignment.center_right
             )
-            home_page_1.controls[0].border_radius = border_radius.only(
+            side_bar.controls[0].border_radius = border_radius.only(
                 top_left = 20,
                 top_right = 0,
                 bottom_left = 20,
                 bottom_right = 0
             )
-            home_page_1.update()
+            side_bar.update()
 
     def restore(e):
-        home_page_1.controls[0].width = 400
-        home_page_1.controls[0].border_radius = 20
-        home_page_1.controls[0].scale = transform.Scale(
+        side_bar.controls[0].width = 400
+        side_bar.controls[0].border_radius = 20
+        side_bar.controls[0].scale = transform.Scale(
             1,
             alignment = alignment.center_right
         )
-        home_page_1.update()
+        side_bar.update()
 
     circle = Stack(
         controls = [
@@ -143,7 +143,7 @@ def view_home_page(page: Page) -> Container:
             )
         )
 
-    first_page_contents = Container(
+    main_page = Container(
         content = Column(
             controls = [
                 Row(
@@ -194,7 +194,7 @@ def view_home_page(page: Page) -> Container:
         )
     )
 
-    home_page_1 = Row(
+    side_bar = Row(
         alignment = 'end',
         controls = [
             Container(
@@ -212,14 +212,14 @@ def view_home_page(page: Page) -> Container:
                 ),
                 content = Column(
                     controls = [
-                        first_page_contents
+                        main_page
                     ]
                 )
             )
         ]
     )
 
-    home_page_2 = Container(
+    info_content_page = Container(
         width = 400,
         height = 850,
         bgcolor = DEEPBLUE,
@@ -312,8 +312,8 @@ def view_home_page(page: Page) -> Container:
 
         content = Stack(
             controls = [
-                home_page_2,
-                home_page_1
+                info_content_page,
+                side_bar
             ]
         )
     )

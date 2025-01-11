@@ -43,7 +43,7 @@ def view_sign_in_page(page: Page) -> Container:
         focused_border_color = PINK
     )
 
-    def request_data(event):
+    def request_data(e):
         user_name = user_name_field.value
         email = email_field.value
         password = password_field.value

@@ -9,30 +9,31 @@ LIGHTBLUE = '#B0C4DE'
 
 page: Page
 
-listaDeParticipantes = Column(
-    height = 300,
-    scroll = 'auto',
-)
-
-items = []
-input_field = TextField(
-    label = "Adicionar participante", 
-    hint_text = "Insira aqui o nome do participante: ",
-    border_color = MEDIUMBLUE,
-    text_style = TextStyle(
-        color = LIGHTBLUE
-    ),
-    autofocus = True,
-    focused_border_color = PINK
-)  # Campo de texto para inserir itens
+participants = []
 
 def view_create_expense_page(page: Page) -> Container:
 
+    listaDeParticipantes = Column(
+        height = 300,
+        scroll = 'auto',
+    )
+
+    partipant_input = TextField(
+        label = "Adicionar participante", 
+        hint_text = "Insira aqui o nome do participante: ",
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = LIGHTBLUE
+        ),
+        autofocus = True,
+        focused_border_color = PINK
+    )  # Campo de texto para inserir partipantes
+
     def addParticipante(e):
-        item = input_field.value.strip()
+        item = partipant_input.value.strip()
         if item:  # Verifica se o item não está vazio
-            items.append(item)  # Adiciona o item à lista
-            input_field.value = ""  # Limpa o campo de texto
+            participants.append(item)  # Adiciona o item à lista
+            partipant_input.value = ""  # Limpa o campo de texto
             listaDeParticipantes.controls.append( # Adiciona o item à exibição da lista
                 Container(
                     margin = margin.only(left = 15, right = 10, top = 5),
@@ -44,7 +45,7 @@ def view_create_expense_page(page: Page) -> Container:
                         left = 20,
                     top = 20
                     ),
-                    content = CustomCheckBox(color = PINK, 
+                    content = CustomCheckBox(color = PINK, # arrumar a CustomBox (mudar a cor e, toda vez que clicarmos, o participante seja retirado)
                                             label_color = DEEPBLUE, 
                                             label = item,
                                             size = 30,
@@ -66,10 +67,26 @@ def view_create_expense_page(page: Page) -> Container:
                 },
                 bgcolor = MEDIUMBLUE
             ),
-            on_click = addParticipante
+            on_click = lambda e: addParticipante(e)
         )
     )
-    
+
+    submit_button = Container(
+                        margin = margin.only(left = 115, right = 0, top = 30),
+                        content = TextButton(
+                            "Criar despesa",
+                            style = ButtonStyle(
+                                color = {
+                                    ControlState.HOVERED: LIGHTBLUE,
+                                    ControlState.FOCUSED: WHITE,
+                                    ControlState.DEFAULT: PINK,
+                                },
+                                bgcolor = MEDIUMBLUE,
+                            ),
+                            on_click = lambda _: page.go('/expense_page')
+                        )
+                    )
+        
     create_expense_page = Container(
         width = 400,
         height = 850,
@@ -115,29 +132,13 @@ def view_create_expense_page(page: Page) -> Container:
                     margin = margin.only(left = 15, right = 10, top = 15),
                     content = Column(
                         controls = [
-                            input_field
+                            partipant_input
                         ]
                     )
                 ),
                 add_button,
                 listaDeParticipantes,
-                Container(
-                    height = 50,
-                    width = 400,
-                    margin = margin.only(left = 15, right = 10, top = 30),
-                    content = TextButton(
-                        "Criar despesa",
-                        style = ButtonStyle(
-                            color = {
-                                ControlState.HOVERED: LIGHTBLUE,
-                                ControlState.FOCUSED: WHITE,
-                                ControlState.DEFAULT: PINK,
-                            },
-                            bgcolor = MEDIUMBLUE,
-                        ),
-                        on_click = lambda _: page.go('/expense_page')
-                    )
-                ),
+                submit_button,
             ]
         ),
     )

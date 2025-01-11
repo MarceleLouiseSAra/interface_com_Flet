@@ -11,38 +11,50 @@ page: Page
 
 def view_log_in_page(page: Page) -> Container:
 
-    user_name_field = TextField(
-        label = "Nome de usuário",
-        hint_text = "Insira aqui o seu nome de usuário: ",
+
+    username_input = TextField(
+        label = "Usuário", 
+        hint_text = "Insira aqui o nome de usuário: ",
         border_color = MEDIUMBLUE,
         text_style = TextStyle(
-            color = MEDIUMBLUE
+            color = LIGHTBLUE
         ),
+        autofocus = True,
         focused_border_color = PINK
     )
-
-    password_field = TextField(
-        label = "Senha",
-        hint_text = "Insira a sua senha aqui: ",
+    
+    password_input = TextField(
+        label = "Senha", 
+        hint_text = "Insira aqui a senha: ",
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = LIGHTBLUE
+        ),
+        autofocus = True,
         password = True,
         can_reveal_password = True,
-        border_color = MEDIUMBLUE,
-        text_style = TextStyle(
-            color = MEDIUMBLUE
-        ),
         focused_border_color = PINK
     )
 
-    def request_data(event):
-        user_name = user_name_field.value
-        password = password_field.value
+    def on_submit(e): # análogo ao request_data
+        username = username_input.value
+        password = password_input.value
+        # VALIDAÇÕES AQUI
+        print(f"Usuário:", {username}, "Senha:", {password})
+        page.go('/home_page')
+
+    def request_data(e):
+        user_name = username_input.value
+        password = password_input.value
         
         body = {
             "user_name": user_name,
             "password": password
         }
-        r = requests.get('http://localhost:8000/users', data=body)
+
+        r = requests.get('http://localhost:8000/users', data = body)
         print(r.json())
+        page.go('/home_page')
 
     log_in_page = Container(
         width = 400,
@@ -100,14 +112,14 @@ def view_log_in_page(page: Page) -> Container:
                     width = 400,
                     margin = margin.only(left = 20, right = 20, top = 30),
                     content = Column(
-                        controls = [user_name_field]
+                        controls = [username_input]
                     )
                 ),
                 Container(
                     width = 400,
                     margin = margin.only(left = 20, right = 20, top = 15),
                     content = Column(
-                        controls = [password_field]
+                        controls = [password_input]
                     )
                 ),
                 Container(
@@ -130,7 +142,7 @@ def view_log_in_page(page: Page) -> Container:
                             },
                             bgcolor = MEDIUMBLUE
                         ),
-                        on_click = lambda e: request_data(e)
+                        on_click = lambda e: on_submit(e) # trocar pela request_data
                     )
                 )
             ]

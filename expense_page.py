@@ -1,5 +1,5 @@
 from flet import *
-from custom_checkbox import CustomCheckBox
+from create_expense_page import participants
 
 DEEPBLUE = '#432350'
 MEDIUMBLUE = '#b476ff'
@@ -11,28 +11,24 @@ page: Page
 
 def view_expense_page(page: Page) -> Container:
 
-    def shrink(e):
-            add_expense.controls[0].width = 200
-            add_expense.controls[0].scale = transform.Scale(
-                0.8,
-                alignment = alignment.center_right
-            )
-            add_expense.controls[0].border_radius = border_radius.only(
-                top_left = 20,
-                top_right = 0,
-                bottom_left = 20,
-                bottom_right = 0
-            )
-            add_expense.update()
-
-    def restore(e):
-        add_expense.controls[0].width = 400
-        add_expense.controls[0].border_radius = 20
-        add_expense.controls[0].scale = transform.Scale(
-            1,
-            alignment = alignment.center_right
+    def on_submit(e):
+        print("Partipantes", participants)
+        
+    submit_button = Container(
+        content = Column(
+            controls = [
+                Stack(
+                    controls = [
+                        FloatingActionButton(
+                            icon = icons.ADD, 
+                            on_click = lambda e: on_submit(e),
+                            bgcolor = LIGHTBLUE
+                        )
+                    ]
+                )
+            ]
         )
-        add_expense.update()
+    )
 
     expenses_n_balance_layer = Container()
 
@@ -44,11 +40,10 @@ def view_expense_page(page: Page) -> Container:
         bgcolor = DEEPBLUE,
         border_radius = 20,
 
-        content = Stack(
+        content = Column(
             controls = [
-                expenses_n_balance_layer,
-                add_expense,
-            ]
+                submit_button
+            ] 
         )
     )
 

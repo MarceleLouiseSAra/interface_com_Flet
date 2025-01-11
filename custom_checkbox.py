@@ -93,7 +93,8 @@ class CustomCheckBox(UserControl):
         
 
     if self.pressed:
-      self.run()       
+      self.run()   
+          
   def is_checked(self):
       return self.checked
 
