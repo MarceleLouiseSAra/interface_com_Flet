@@ -10,6 +10,7 @@ def main(page: Page):
 
     page.title = "fazAConta"
     page.theme_mode = 'dark'
+    page.horizontal_alignment = 'center'
 
     waiting_room_page = view_waiting_room_page(page)
     log_in_page = view_log_in_page(page)

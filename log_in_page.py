@@ -1,4 +1,5 @@
 from flet import *
+import requests
 
 DEEPBLUE = '#432350'
 MEDIUMBLUE = '#b476ff'
@@ -9,6 +10,39 @@ LIGHTBLUE = '#B0C4DE'
 page: Page
 
 def view_log_in_page(page: Page) -> Container:
+
+    user_name_field = TextField(
+        label = "Nome de usuário",
+        hint_text = "Insira aqui o seu nome de usuário: ",
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = MEDIUMBLUE
+        ),
+        focused_border_color = PINK
+    )
+
+    password_field = TextField(
+        label = "Senha",
+        hint_text = "Insira a sua senha aqui: ",
+        password = True,
+        can_reveal_password = True,
+        border_color = MEDIUMBLUE,
+        text_style = TextStyle(
+            color = MEDIUMBLUE
+        ),
+        focused_border_color = PINK
+    )
+
+    def request_data(event):
+        user_name = user_name_field.value
+        password = password_field.value
+        
+        body = {
+            "user_name": user_name,
+            "password": password
+        }
+        r = requests.get('http://localhost:8000/users', data=body)
+        print(r.json())
 
     log_in_page = Container(
         width = 400,
@@ -66,36 +100,14 @@ def view_log_in_page(page: Page) -> Container:
                     width = 400,
                     margin = margin.only(left = 20, right = 20, top = 30),
                     content = Column(
-                        controls = [
-                            TextField(
-                                label = "Nome de usuário",
-                                hint_text = "Insira aqui o seu nome de usuário: ",
-                                border_color = MEDIUMBLUE,
-                                text_style = TextStyle(
-                                    color = MEDIUMBLUE
-                                ),
-                                focused_border_color = PINK
-                            )
-                        ]
+                        controls = [user_name_field]
                     )
                 ),
                 Container(
                     width = 400,
                     margin = margin.only(left = 20, right = 20, top = 15),
                     content = Column(
-                        controls = [
-                            TextField(
-                                label = "Senha",
-                                hint_text = "Insira a sua senha aqui: ",
-                                password = True,
-                                can_reveal_password = True,
-                                border_color = MEDIUMBLUE,
-                                text_style = TextStyle(
-                                    color = MEDIUMBLUE
-                                ),
-                                focused_border_color = PINK
-                            )
-                        ]
+                        controls = [password_field]
                     )
                 ),
                 Container(
@@ -118,7 +130,7 @@ def view_log_in_page(page: Page) -> Container:
                             },
                             bgcolor = MEDIUMBLUE
                         ),
-                        on_click = lambda _: page.go('/home_page')
+                        on_click = lambda e: request_data(e)
                     )
                 )
             ]
