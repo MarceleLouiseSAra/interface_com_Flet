@@ -20,6 +20,7 @@ def view_sign_in_page(page: Page) -> Container:
         ),
         focused_border_color = PINK
     )
+
     email_field = TextField(
         label = "E-mail",
         hint_text = "Insira aqui o seu e-mail: ",
@@ -29,6 +30,7 @@ def view_sign_in_page(page: Page) -> Container:
         ),
         focused_border_color = PINK
     )
+
     password_field = TextField(
         label = "Senha",
         hint_text = "Insira a sua senha aqui: ",
@@ -41,13 +43,11 @@ def view_sign_in_page(page: Page) -> Container:
         focused_border_color = PINK
     )
 
-
     def request_data(event):
         user_name = user_name_field.value
         email = email_field.value
         password = password_field.value
         
-
         body = {
             "user_name": user_name,
             "email": email,

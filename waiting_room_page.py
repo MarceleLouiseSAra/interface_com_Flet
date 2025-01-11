@@ -29,7 +29,7 @@ def view_waiting_room_page(page: Page) -> Container:
                             weight = 'bold', 
                             color = LIGHTBLUE
                         ),
-                        margin = margin.only(top = 100, left = 35)
+                        margin = margin.only(top = 100, left = 35),
                     ),
                     Row([
                         Container(
