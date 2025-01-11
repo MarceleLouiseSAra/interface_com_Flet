@@ -41,7 +41,6 @@ def view_expense_page(page: Page) -> Container:
         content = Column(
             controls = [
                 Container(
-                    width = 350,
                     bgcolor = LIGHTBLUE,
                     border_radius = 10,
                     padding = 15,
@@ -60,13 +59,7 @@ def view_expense_page(page: Page) -> Container:
                         content = Row(
                             controls = [
                                 Text(
-                                    "R$",
-                                    size = 20,
-                                    color = WHITE,
-                                    weight = 'w700'
-                                ),
-                                Text(
-                                    "100,00", # puxar do db
+                                    "R$ " + "100,00", # puxar do db
                                     size = 20,
                                     color = WHITE,
                                     weight = 'w700'
@@ -77,7 +70,7 @@ def view_expense_page(page: Page) -> Container:
                     ),
                 ]),
             ],
-            horizontal_alignment = CrossAxisAlignment.CENTER
+            horizontal_alignment = CrossAxisAlignment.START
         )
     )
 
@@ -91,31 +84,59 @@ def view_expense_page(page: Page) -> Container:
                 margin = margin.only(left = 15, right = 10, top = 5),
                 width = 320,
                 height = 70,
-                bgcolor = LIGHTBLUE,
+                bgcolor = PINK,
                 border_radius = 10,
                 padding = padding.only(
                     left = 20,
-                    top = 20
+                    right = 20,
+                    top = 5
                 ),
-                content = CustomCheckBox(color = PINK, # arrumar a CustomBox (mudar a cor e, toda vez que clicarmos, o participante seja retirado)
-                                        label_color = DEEPBLUE, 
-                                        label = participant,
-                                        size = 30,
-                                        font_size = 15),
+                content = Row(
+                        controls = [
+                            Text(
+                                participant,
+                                size = 16,
+                                color = DEEPBLUE,
+                                weight = 'w700'
+                            ),
+                            Text(
+                                "R$ " + "100,00", # puxar do db
+                                size = 16,
+                                color = DEEPBLUE,
+                                weight = 'w700'
+                            ),
+                        ],
+                        alignment = 'spaceBetween'
+                    ),
+                )
             )
-        )
 
     balance_layer = Container(
         width = 350,
         height = 300,
         bgcolor = MEDIUMBLUE,
         border_radius = 10,
-        padding = padding.only(
-            top = 10,
-            bottom = 10
-        ),
+        padding = 15,
 
-        content = listaDeParticipantes
+        content = Column(
+            controls = [
+                Container(
+                    bgcolor = LIGHTBLUE,
+                    border_radius = 10,
+                    padding = 15,
+
+                    content = Text(
+                        "Balanço",
+                        size = 16,
+                        weight = 'w700',
+                        color = DEEPBLUE,
+                    ),
+                ),
+                listaDeParticipantes
+            ]
+        )
+        
+        
     )
 
     layers_scroll = Row(
@@ -142,7 +163,7 @@ def view_expense_page(page: Page) -> Container:
                         on_click = lambda _: page.go('/create_expense_page'),
                     ),
                     Container(
-                        margin = margin.only(left = 90, right = 10, top = 20),
+                        margin = margin.only(left = 90, right = 10, top = 20, bottom = 20),
                         content = Text(
                             "nome da despesa", # buscar o nome da despesa no db e inserí-lo aqui
                             size = 25,
