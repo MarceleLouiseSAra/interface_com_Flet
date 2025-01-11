@@ -9,7 +9,7 @@ LIGHTBLUE = '#B0C4DE'
 
 page: Page
 
-participants = ['joão', 'marcele'] # puxar do db
+participants = ['joão', 'marcele', 'caio', 'maria'] # puxar do db
 
 def view_expense_page(page: Page) -> Container:
         
@@ -75,6 +75,7 @@ def view_expense_page(page: Page) -> Container:
     )
 
     listaDeParticipantes = Column(
+        height = 200,
         scroll = 'auto',
     )
 
@@ -86,11 +87,8 @@ def view_expense_page(page: Page) -> Container:
                 height = 70,
                 bgcolor = PINK,
                 border_radius = 10,
-                padding = padding.only(
-                    left = 20,
-                    right = 20,
-                    top = 5
-                ),
+                padding = 15,
+                
                 content = Row(
                         controls = [
                             Text(
