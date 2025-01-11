@@ -2,10 +2,10 @@ from flet import *
 
 class CustomCheckBox(UserControl):
   
-  def __init__(self, color, label = '', label_color ='', selection_fill= '#183588', size=25, stroke_width=2, animation=None, checked=False, font_size=17, pressed=None):
+  def __init__(self, color, label = '', label_color ='', selection_fill= '#432350', size=25, stroke_width=2, animation=None, checked=True, font_size=17, pressed=None):
     super().__init__()
     self.selection_fill = selection_fill
-    self.color = color
+    self.color = '#432350'
     self.label = label
     self.label_color = label_color
     self.size = size
@@ -37,7 +37,7 @@ class CustomCheckBox(UserControl):
     return self.check_box
 
   def build(self):
-    self.BG = '#041955'
+    self.BG = '#432350'
     self.FG = '#3450a1'
     self.PINK = '#eb06ff'
     self.CHECKED = '#183588'

@@ -184,7 +184,7 @@ def view_home_page(page: Page) -> Container:
                             bottom = 2,
                             right = 20,
                             icon = icons.ADD, 
-                            on_click = lambda _: page.go('/create_tuition_page'),
+                            on_click = lambda _: page.go('/create_expense_page'),
                             # on_click = lambda e: alertDialog(page),
                             bgcolor = LIGHTBLUE
                         )

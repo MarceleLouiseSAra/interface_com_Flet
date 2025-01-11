@@ -37,17 +37,18 @@ def view_create_expense_page(page: Page) -> Container:
                 Container(
                     margin = margin.only(left = 15, right = 10, top = 5),
                     width = 400,
-                    height = 50,
+                    height = 70,
                     bgcolor = LIGHTBLUE,
                     border_radius = 10,
                     padding = padding.only(
                         left = 20,
-                        top = 15
+                    top = 20
                     ),
-                    content = Text(item,
-                                size = 15.5, 
-                                color = DEEPBLUE, 
-                                weight = 'w700'),
+                    content = CustomCheckBox(color = PINK, 
+                                            label_color = DEEPBLUE, 
+                                            label = item,
+                                            size = 30,
+                                            font_size = 15),
                 )
             )  # Adiciona o item à exibição da lista
             page.update()  # Atualiza a página para refletir as mudanças
@@ -134,7 +135,7 @@ def view_create_expense_page(page: Page) -> Container:
                             },
                             bgcolor = MEDIUMBLUE,
                         ),
-                        on_click = lambda _: page.go('/')
+                        on_click = lambda _: page.go('/expense_page')
                     )
                 ),
             ]
