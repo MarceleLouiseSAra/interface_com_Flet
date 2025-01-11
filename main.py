@@ -3,7 +3,7 @@ from waiting_room_page import view_waiting_room_page
 from log_in_page import view_log_in_page
 from sign_in_page import view_sign_in_page
 from home_page import view_home_page
-from create_tuition_page import view_create_tuition_page
+from create_expense_page import view_create_expense_page
 
 def main(page: Page):
 
@@ -14,14 +14,14 @@ def main(page: Page):
     log_in_page = view_log_in_page(page)
     sign_in_page = view_sign_in_page(page)
     home_page = view_home_page(page)
-    create_tuition_page = view_create_tuition_page(page)
+    create_expense_page = view_create_expense_page(page)
 
     pages = {
         '/': View("/waiting_room_page", [waiting_room_page]),
         '/log_in_page': View("/log_in_page", [log_in_page]),
         '/sign_in_page': View("/sign_in_page", [sign_in_page]),
         '/home_page': View("/home_page", [home_page]),
-        '/create_tuition_page': View("/create_tuition_page", [create_tuition_page])
+        '/create_expense_page': View("/create_expense_page", [create_expense_page])
     }
 
     def route_change(route):

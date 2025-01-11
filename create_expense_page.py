@@ -26,7 +26,7 @@ input_field = TextField(
     focused_border_color = PINK
 )  # Campo de texto para inserir itens
 
-def view_create_tuition_page(page: Page) -> Container:
+def view_create_expense_page(page: Page) -> Container:
 
     def addParticipante(e):
         item = input_field.value.strip()
@@ -69,7 +69,7 @@ def view_create_tuition_page(page: Page) -> Container:
         )
     )
     
-    create_tuition_page = Container(
+    create_expense_page = Container(
         width = 400,
         height = 850,
         bgcolor = DEEPBLUE,
@@ -141,4 +141,4 @@ def view_create_tuition_page(page: Page) -> Container:
         ),
     )
 
-    return (create_tuition_page)
+    return (create_expense_page)
