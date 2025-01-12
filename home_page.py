@@ -1,5 +1,6 @@
 from flet import *
 from custom_checkbox import CustomCheckBox
+import requests
 
 DEEPBLUE = '#432350'
 MEDIUMBLUE = '#b476ff'
@@ -8,6 +9,8 @@ WHITE = '#ffffff'
 LIGHTBLUE = '#B0C4DE'
 
 page: Page
+
+expenses = ['viagem', 'restaurante', 'compras de fim de ano'] # puxar do db
 
 def view_home_page(page: Page) -> Container:
 
@@ -70,6 +73,7 @@ def view_home_page(page: Page) -> Container:
                                 content = CircleAvatar(
                                     opacity = 0.8,
                                     foreground_image_url = "https://images.unsplash.com/photo-1545912452-8aea7e25a3d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8MEDIUMBLUEVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                    # puxar do db
                                 )
                             )
                         )
@@ -84,7 +88,7 @@ def view_home_page(page: Page) -> Container:
         scroll = 'auto'
     )
 
-    for i in range(10): # puxar os dados de quantas desespesas têm-se da db
+    for expense in expenses: # puxar os dados de quantas desespesas têm-se da db
         outgoings.controls.append(
             Container(
                 height = 70,
@@ -97,7 +101,7 @@ def view_home_page(page: Page) -> Container:
                 ),
                 content = CustomCheckBox(color = PINK, 
                                             label_color = WHITE, 
-                                            label = 'turn coffee into code',
+                                            label = expense,
                                             size = 30,
                                             font_size = 15)
             )
@@ -107,7 +111,7 @@ def view_home_page(page: Page) -> Container:
         scroll = 'auto'
     )
 
-    groups = ['Trabalho', 'Família', 'Amigos'] # fazer disso um dicionário?, importar da db?
+    groups = ['Trabalho', 'Família', 'Amigos'] # puxar do db
 
     for group in groups:
         groups_card.controls.append(
@@ -121,12 +125,6 @@ def view_home_page(page: Page) -> Container:
                 content = Column(
                     controls = [
                         Text(group, color = WHITE),
-                        Container( # espaço entre os objetos
-                            padding = padding.only(
-                                top = 10,
-                                bottom = 10
-                            )
-                        ),
                         Container(
                             width = 160,
                             height = 5,
@@ -138,7 +136,8 @@ def view_home_page(page: Page) -> Container:
                                 bgcolor = PINK
                             )
                         )
-                    ]
+                    ],
+                    alignment = 'spaceBetween'
                 )
             )
         )
@@ -168,7 +167,7 @@ def view_home_page(page: Page) -> Container:
                         )
                     ]
                 ),
-                Text(value = "Olá, João!", size = 28, weight = 'bold', color = WHITE),
+                Text(value = "Olá, João!", size = 28, weight = 'bold', color = WHITE), # puxar do db
                 Text(value = 'GRUPOS', weight = 'bold', color = WHITE),
                 Container(
                     content = groups_card
@@ -248,7 +247,7 @@ def view_home_page(page: Page) -> Container:
                     height = 20,
                 ),
                 circle,
-                Text('João\nPirajá', size = 32, weight = 'bold', color = LIGHTBLUE),
+                Text('João\nPirajá', size = 32, weight = 'bold', color = LIGHTBLUE), # puxar do db
                 Container(
                     height = 5
                 ),

@@ -9,6 +9,7 @@ LIGHTBLUE = '#B0C4DE'
 
 page: Page
 
+despesas = ['pizza', 'compras', 'uber'] # puxar do db
 participants = ['joão', 'marcele', 'caio', 'maria'] # puxar do db
 
 def view_expense_page(page: Page) -> Container:
@@ -30,6 +31,41 @@ def view_expense_page(page: Page) -> Container:
             ]
         )
     )
+
+    listaDeDespesas = Column(
+        height = 130,
+        scroll = 'auto',
+    )
+
+    for despesa in despesas:
+        listaDeDespesas.controls.append(
+            Container(
+                margin = margin.only(left = 15, right = 10, top = 5),
+                width = 320,
+                height = 70,
+                bgcolor = PINK,
+                border_radius = 10,
+                padding = 15,
+                
+                content = Row(
+                        controls = [
+                            Text(
+                                despesa,
+                                size = 16,
+                                color = DEEPBLUE,
+                                weight = 'w700'
+                            ),
+                            Text(
+                                "R$ " + "100,00", # puxar do db
+                                size = 16,
+                                color = DEEPBLUE,
+                                weight = 'w700'
+                            ),
+                        ],
+                        alignment = 'spaceBetween'
+                    ),
+                )
+            )
 
     expenses_layer = Container(
         width = 350,
@@ -54,28 +90,23 @@ def view_expense_page(page: Page) -> Container:
                 ),
                 Row([
                     Container(
-                        margin = margin.only(left = 105, right = 10, top = 10),
-
-                        content = Row(
-                            controls = [
-                                Text(
-                                    "R$ " + "100,00", # puxar do db
-                                    size = 20,
-                                    color = WHITE,
-                                    weight = 'w700'
-                                ),
-                            ],
-                            alignment = MainAxisAlignment.START
+                        margin = margin.only(left = 120, right = 10, top = 10),
+                        content = Text(
+                            "R$ " + "100,00", # puxar do db (soma do custo de todas as despesas)
+                            size = 20,
+                            color = WHITE,
+                            weight = 'w700'
                         ),
                     ),
                 ]),
+                listaDeDespesas,
             ],
             horizontal_alignment = CrossAxisAlignment.START
         )
     )
 
     listaDeParticipantes = Column(
-        height = 200,
+        height = 180,
         scroll = 'auto',
     )
 
