@@ -23,7 +23,7 @@ class LoginView(ft.View):
 
     def __init__(self, page: ft.Page, is_private: bool = False):
         super().__init__(
-            route="/login",
+            route=Routes.LOGIN.value,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             vertical_alignment=ft.MainAxisAlignment.CENTER,
         )
@@ -76,7 +76,7 @@ class LoginView(ft.View):
     def on_login_sucess(self, data):
         self.show_snackbar("Login realizado com sucesso!", color=ft.colors.GREEN)
         self.page.session.set("token", data)
-        self.page.go(Routes.HOME)
+        self.page.go(Routes.HOME.value)
 
     def on_login_error(self, message: str, exc: Exception):
         print(f"Erro no login: {message}")
@@ -120,7 +120,7 @@ class LoginView(ft.View):
                                     ft.icons.ARROW_BACK_IOS_NEW_ROUNDED, color=LIGHTBLUE
                                 ),
                                 margin=ft.margin.only(left=15, right=10, top=20),
-                                on_click=lambda _: page.go("/"),
+                                on_click=lambda _: page.go(Routes.HOME.value),
                             ),
                             ft.Container(
                                 width=100,
@@ -130,7 +130,7 @@ class LoginView(ft.View):
                                     style=ft.ButtonStyle(
                                         color=LIGHTBLUE, bgcolor=DEEPBLUE
                                     ),
-                                    on_click=lambda _: page.go("/sign_in_page"),
+                                    on_click=lambda _: page.go(Routes.REGISTER.value),
                                 ),
                             ),
                         ]
@@ -171,22 +171,6 @@ class LoginView(ft.View):
                         margin=ft.margin.only(left=90, right=20, top=15),
                         content=ft.TextButton("Esqueceu a senha?"),
                     ),
-                    # ft.Container(
-                    #     width=100,
-                    #     margin=ft.margin.only(left=140, right=20, top=10),
-                    #     content=ft.TextButton(
-                    #         "Entrar",
-                    #         style=ft.ButtonStyle(
-                    #             color={
-                    #                 ft.ControlState.HOVERED: LIGHTBLUE,
-                    #                 ft.ControlState.FOCUSED: WHITE,
-                    #                 ft.ControlState.DEFAULT: PINK,
-                    #             },
-                    #             bgcolor=MEDIUMBLUE,
-                    #         ),
-                    #         on_click=lambda e: self.on_submit(e),
-                    #     ),
-                    # ),
                     ft.Container(
                         width=100,
                         margin=ft.margin.only(left=140, right=20, top=10),

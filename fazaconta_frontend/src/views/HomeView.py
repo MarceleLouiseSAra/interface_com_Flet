@@ -7,6 +7,7 @@ from fazaconta_frontend.src.constants import (
     VIEW_HEIGHT,
     VIEW_WIDTH,
     WHITE,
+    Routes,
 )
 
 
@@ -15,7 +16,7 @@ class HomeView(ft.View):
 
     def __init__(self, page: ft.Page, is_private: bool = False):
         super().__init__(
-            route="/",
+            route=Routes.HOME,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             vertical_alignment=ft.MainAxisAlignment.CENTER,
         )
@@ -58,7 +59,7 @@ class HomeView(ft.View):
                                             ft.ControlState.DEFAULT: DEEPBLUE,
                                         },
                                     ),
-                                    on_click=lambda _: page.go("/sign-in"),
+                                    on_click=lambda _: page.go(Routes.REGISTER.value),
                                 ),
                             ),
                             ft.Container(
@@ -73,7 +74,7 @@ class HomeView(ft.View):
                                             ft.ControlState.DEFAULT: DEEPBLUE,
                                         },
                                     ),
-                                    on_click=lambda _: page.go("/login"),
+                                    on_click=lambda _: page.go(Routes.LOGIN.value),
                                 ),
                             ),
                         ],

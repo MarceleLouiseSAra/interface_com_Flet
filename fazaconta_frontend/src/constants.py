@@ -7,6 +7,14 @@ class Routes(str, Enum):
     REGISTER = "/register"
     NOT_FOUND = "/not-found"
 
+    @classmethod
+    def __contains__(cls, item):
+        try:
+            cls(item)
+        except ValueError:
+            return False
+        return True
+
 
 # View props
 VIEW_WIDTH = 400

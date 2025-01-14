@@ -1,5 +1,6 @@
 import flet as ft
 from fazaconta_frontend.src.constants import Routes
+from fazaconta_frontend.src.views.RegisterView import RegisterView
 from fazaconta_frontend.src.views.HomeView import HomeView
 from fazaconta_frontend.src.views.LoginView import LoginView
 from fazaconta_frontend.src.views.ViewNotFound import ViewNotFound
@@ -33,6 +34,7 @@ def main(page: ft.Page):
     pages = {
         Routes.HOME: HomeView(page),
         Routes.LOGIN: LoginView(page),
+        Routes.REGISTER: RegisterView(page),
         Routes.NOT_FOUND: ViewNotFound(page),
         # "/": ft.View(
         #     route="/waiting_room_page",
@@ -82,13 +84,20 @@ def main(page: ft.Page):
         return page.session.get("token") is not None
 
     def route_change(route):
-        view = pages.get(Routes(page.route), ViewNotFound(page))
-        if view.is_private and not is_authenticated(page):
-            page.go(Routes.NOT_FOUND)
+        page.views.clear()
+
+        view = (
+            pages.get(Routes(page.route), ViewNotFound(page))
+            if page.route in Routes
+            else None
+        )
+
+        if not view or (view.is_private and not is_authenticated(page)):
+            page.views.append(ViewNotFound(page))
         else:
-            page.views.clear()
             page.views.append(view)
-            page.update()
+
+        page.update()
 
     page.on_route_change = route_change
     page.go(page.route)

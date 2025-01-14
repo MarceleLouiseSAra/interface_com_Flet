@@ -7,6 +7,7 @@ from fazaconta_frontend.src.constants import (
     VIEW_HEIGHT,
     VIEW_WIDTH,
     WHITE,
+    Routes,
 )
 
 
@@ -15,7 +16,7 @@ class ViewNotFound(ft.View):
 
     def __init__(self, page: ft.Page, is_private: bool = False):
         super().__init__(
-            route="/404",
+            route=Routes.NOT_FOUND,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             vertical_alignment=ft.MainAxisAlignment.CENTER,
         )
