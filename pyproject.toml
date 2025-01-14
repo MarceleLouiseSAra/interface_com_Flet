@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "fazaconta-frontend"
+version = "0.1.0"
+description = ""
+authors = ["Marcele Louise Silva Araponga", "João Pedro Lima Pirajá"]
+readme = "README.md"
+
+[[tool.mypy.overrides]]
+module = ["fazaconta_frontend.*"]
+follow_untyped_imports = true
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flet = "^0.25.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+black = "^24.10.0"
+isort = "^5.13.2"
+poethepoet = "^0.29.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+
+[tool.isort]
+profile = "black"
+
+[tool.poe.tasks]
+start = "flet run -d -r fazaconta_frontend/main.py"
+format = "black ."
+sort-imports = "isort ."
+lint = ["format", "sort-imports"]
+test-command = "pytest -s -x --cov=fazaconta_backend -vv"
+coverage-html = "coverage html"
+test = ["lint", "test-command", "coverage-html"]
