@@ -46,8 +46,8 @@ class RegisterView(ft.View):
         )
 
         self.name_input = Input(
-            label="Nome de usuário",
-            hint_text="Insira aqui o nome de usuário",
+            label="Nome",
+            hint_text="Insira aqui o seu nome",
             border_color=MEDIUMBLUE,
             text_style=ft.TextStyle(color=LIGHTBLUE),
             focused_border_color=PINK,
@@ -255,7 +255,7 @@ class RegisterView(ft.View):
                                         ft.icons.ARROW_BACK_IOS_NEW_ROUNDED,
                                         color=LIGHTBLUE,
                                     ),
-                                    on_click=lambda _: self.page.go(Routes.HOME),
+                                    on_click=lambda _: self.page.go(Routes.HOME.value),
                                 ),
                                 ft.Container(
                                     width=100,
@@ -345,7 +345,7 @@ class RegisterView(ft.View):
                                     content=self.confirm_password_input,
                                 ),
                             ],
-                            scroll=ft.ScrollMode.ADAPTIVE,
+                            scroll=ft.ScrollMode.HIDDEN,
                         ),
                     ),
                     ft.Container(

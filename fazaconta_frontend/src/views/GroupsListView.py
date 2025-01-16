@@ -1,5 +1,6 @@
 import flet as ft
-from fazaconta_frontend.src.constants import Routes
+from fazaconta_frontend.src.api.ApiClient import api_client
+from fazaconta_frontend.src.constants import VIEW_WIDTH, Routes
 
 DEEPBLUE = "#432350"
 MEDIUMBLUE = "#b476ff"
@@ -117,6 +118,8 @@ groups_template = [
 
 
 class GroupsListView(ft.View):
+    page: ft.Page
+    is_private: bool
     is_sidebar_open: bool = False
 
     def __init__(self, page: ft.Page, is_private: bool = False):
@@ -126,9 +129,11 @@ class GroupsListView(ft.View):
             vertical_alignment=ft.MainAxisAlignment.CENTER,
         )
         self.page = page
-        self.groups = groups_template
-        self.filtered_groups = self.groups
         self.is_private = is_private
+        self.token = self.page.client_storage.get("token").get("access_token", None)
+        self.me = api_client.me(self.token)
+        self.groups = api_client.get_groups(self.token)
+        self.filtered_groups = self.groups
         self._build_controls()
 
     def _build_controls(self):
@@ -165,7 +170,7 @@ class GroupsListView(ft.View):
                         content=ft.FloatingActionButton(
                             icon=ft.icons.ADD,
                             bgcolor=LIGHTBLUE,
-                            on_click=lambda _: self.page.go("/create_group_page"),
+                            on_click=lambda _: self.page.go(Routes.CREATE_GROUP.value),
                             tooltip="Criar Novo Grupo",
                         ),
                         padding=15,
@@ -245,7 +250,7 @@ class GroupsListView(ft.View):
                 ),
             )
 
-        group_cards = ft.Column(scroll=ft.ScrollMode.ADAPTIVE)
+        group_cards = ft.Column(scroll=ft.ScrollMode.ADAPTIVE, controls=[])
         for group in self.filtered_groups:
             group_cards.controls.append(
                 ft.Container(
@@ -254,9 +259,8 @@ class GroupsListView(ft.View):
                     bgcolor=DEEPBLUE,
                     border_radius=10,
                     padding=ft.padding.symmetric(horizontal=20),
-                    on_click=lambda e, group_id=group["id"]: self.page.go(
-                        # f"/group_details/{group_id}"
-                        Routes.GROUP_DETAILS.value
+                    on_click=lambda _, group_id=group.id: self.page.go(
+                        Routes.GROUP_DETAILS.replace(":id", str(group_id))
                     ),
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -270,20 +274,14 @@ class GroupsListView(ft.View):
                                         bgcolor=LIGHTBLUE,
                                         content=(
                                             ft.Image(
-                                                src=(
-                                                    group["image"]["src"]
-                                                    if group.get("image")
-                                                    and group["image"].get("src")
-                                                    else None
-                                                ),
+                                                src=(str(group.image_src)),
                                                 fit=ft.ImageFit.COVER,
                                             )
-                                            if group.get("image")
-                                            and group["image"].get("src")
+                                            if group.image_src
                                             else ft.Icon(ft.icons.MONEY, color=WHITE)
                                         ),
                                     ),
-                                    ft.Text(group["title"], color=WHITE, size=16),
+                                    ft.Text(group.title, color=WHITE, size=16),
                                 ]
                             ),
                             ft.Icon(ft.icons.ARROW_FORWARD, color=WHITE),
@@ -293,9 +291,24 @@ class GroupsListView(ft.View):
             )
         return group_cards
 
+    def show_snackbar(self, message, color=ft.colors.RED):
+        snackbar = ft.SnackBar(ft.Text(message), bgcolor=color)
+        self.page.snack_bar = snackbar
+        self.page.snack_bar.open = True
+        self.page.update()
+
+    def on_logout_error(self, message: str, exc: Exception):
+        print(f"Erro ao sair da conta: {message}")
+        self.show_snackbar(message, color=ft.colors.RED)
+
+    def logout(self):
+        api_client.logout(self.token, on_error=self.on_logout_error)
+        self.page.client_storage.remove("token")
+        self.page.go(Routes.LOGIN.value)
+
     def _build_profile_content(self):
         return ft.Container(
-            width=400,
+            width=VIEW_WIDTH,
             height=850,
             bgcolor=DEEPBLUE,
             border_radius=35,
@@ -322,7 +335,7 @@ class GroupsListView(ft.View):
                     ft.Container(height=20),
                     self.circle,
                     ft.Text(
-                        "João\nPirajá",
+                        self.me.nickname,
                         size=32,
                         weight=ft.FontWeight.BOLD,
                         color=LIGHTBLUE,
@@ -338,7 +351,6 @@ class GroupsListView(ft.View):
                                                 ft.icons.ACCOUNT_CIRCLE_ROUNDED,
                                                 color=LIGHTBLUE,
                                             ),
-                                            on_click=lambda _: self.page.go("/"),
                                         ),
                                         ft.Text(
                                             "Minha conta",
@@ -372,13 +384,15 @@ class GroupsListView(ft.View):
                                                 ft.icons.ARROW_BACK_IOS_NEW_ROUNDED,
                                                 color=LIGHTBLUE,
                                             ),
-                                            on_click=lambda _: self.page.go("/"),
                                         ),
-                                        ft.Text(
-                                            "Sair",
-                                            color=LIGHTBLUE,
-                                            weight=ft.FontWeight.W_300,
-                                            font_family="poppins",
+                                        ft.Container(
+                                            on_click=lambda _: self.logout(),
+                                            content=ft.Text(
+                                                "Sair da conta",
+                                                color=LIGHTBLUE,
+                                                weight=ft.FontWeight.W_300,
+                                                font_family="poppins",
+                                            ),
                                         ),
                                     ]
                                 ),
@@ -422,7 +436,7 @@ class GroupsListView(ft.View):
                                     border_radius=40,
                                     content=ft.CircleAvatar(
                                         opacity=0.8,
-                                        foreground_image_url="https://images.unsplash.com/photo-1545912452-8aea7e25a3d3?ixlib=rb-4.0.3",
+                                        foreground_image_url=self.me.profile_photo.src,
                                     ),
                                 ),
                             )
@@ -461,7 +475,7 @@ class GroupsListView(ft.View):
     def _filter_groups(self, e):
         search_text = e.control.value.lower()
         self.filtered_groups = [
-            group for group in self.groups if search_text in group["title"].lower()
+            group for group in self.groups if search_text in group.title.lower()
         ]
         self.group_cards = self._build_group_cards()
-        # self.group_cards.update()
+        self.group_cards.update()

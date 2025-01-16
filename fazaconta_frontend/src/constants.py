@@ -5,8 +5,11 @@ class Routes(str, Enum):
     HOME = "/"
     LOGIN = "/login"
     REGISTER = "/register"
+    CREATE_GROUP = "create-group"
     GROUPS_LIST = "/groups-list"
-    GROUP_DETAILS = "/group_details"
+    GROUP_DETAILS = "/group_details/:id"
+    CREATE_TRANSACTION = "/create-transaction/:group_id"
+    BALANCES = "/balances"
     NOT_FOUND = "/not-found"
 
     @classmethod

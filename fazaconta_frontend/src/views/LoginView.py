@@ -33,7 +33,7 @@ class LoginView(ft.View):
 
         self.email_input = Input(
             label="E-mail",
-            hint_text="Insira aqui o e-mail: ",
+            hint_text="Insira aqui o e-mail",
             border_color=MEDIUMBLUE,
             text_style=ft.TextStyle(color=LIGHTBLUE),
             focused_border_color=PINK,
@@ -42,7 +42,7 @@ class LoginView(ft.View):
 
         self.password_input = Input(
             label="Senha",
-            hint_text="Insira aqui a senha: ",
+            hint_text="Insira aqui a senha",
             border_color=MEDIUMBLUE,
             text_style=ft.TextStyle(color=LIGHTBLUE),
             focused_border_color=PINK,
