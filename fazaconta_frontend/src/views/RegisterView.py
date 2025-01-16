@@ -15,6 +15,7 @@ from fazaconta_frontend.src.constants import (
     Routes,
 )
 from fazaconta_frontend.src.dtos.PixType import PixType
+from fazaconta_frontend.src.utils import is_authenticated
 
 
 class RegisterView(ft.View):
@@ -229,6 +230,11 @@ class RegisterView(ft.View):
 
         self.sign_up_button.set_loading_state(False)
 
+    def did_mount(self):
+        super().did_mount()
+        if is_authenticated(self.page):
+            self.page.go(Routes.GROUPS_LIST)
+
     def _main_content(self, page: ft.Page):
         return ft.Container(
             alignment=ft.alignment.center,
@@ -237,29 +243,35 @@ class RegisterView(ft.View):
             bgcolor=DEEPBLUE,
             border_radius=BORDER_RADIUS,
             content=ft.Column(
-                width=400,
+                width=VIEW_WIDTH,
                 controls=[
-                    ft.Row(
-                        [
-                            ft.Container(
-                                ft.Icon(
-                                    ft.icons.ARROW_BACK_IOS_NEW_ROUNDED, color=LIGHTBLUE
-                                ),
-                                margin=ft.margin.only(left=15, right=10, top=20),
-                                on_click=lambda _: page.go("/"),
-                            ),
-                            ft.Container(
-                                width=100,
-                                margin=ft.margin.only(left=215, right=10, top=20),
-                                content=ft.TextButton(
-                                    "Login",
-                                    style=ft.ButtonStyle(
-                                        color=LIGHTBLUE, bgcolor=DEEPBLUE
+                    ft.Container(
+                        width=VIEW_WIDTH,
+                        padding=20,
+                        content=ft.Row(
+                            controls=[
+                                ft.Container(
+                                    ft.Icon(
+                                        ft.icons.ARROW_BACK_IOS_NEW_ROUNDED,
+                                        color=LIGHTBLUE,
                                     ),
-                                    on_click=lambda _: page.go(Routes.LOGIN.value),
+                                    on_click=lambda _: self.page.go(Routes.HOME),
                                 ),
-                            ),
-                        ]
+                                ft.Container(
+                                    width=100,
+                                    content=ft.TextButton(
+                                        "Login",
+                                        style=ft.ButtonStyle(
+                                            color=LIGHTBLUE, bgcolor=DEEPBLUE
+                                        ),
+                                        on_click=lambda _: self.page.go(
+                                            Routes.LOGIN.value
+                                        ),
+                                    ),
+                                ),
+                            ],
+                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        ),
                     ),
                     ft.Container(
                         width=400,

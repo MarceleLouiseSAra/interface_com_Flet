@@ -13,6 +13,7 @@ from fazaconta_frontend.src.constants import (
     VIEW_WIDTH,
     Routes,
 )
+from fazaconta_frontend.src.utils import is_authenticated
 
 
 class LoginView(ft.View):
@@ -54,6 +55,11 @@ class LoginView(ft.View):
 
         self.controls = [self._main_content(page)]
 
+    def did_mount(self):
+        super().did_mount()
+        if is_authenticated(self.page):
+            self.page.go(Routes.GROUPS_LIST)
+
     def validate_email(self, email):
         if not email:
             return "O e-mail é obrigatório."
@@ -75,8 +81,8 @@ class LoginView(ft.View):
 
     def on_login_sucess(self, data):
         self.show_snackbar("Login realizado com sucesso!", color=ft.colors.GREEN)
-        self.page.session.set("token", data)
-        self.page.go(Routes.HOME.value)
+        self.page.client_storage.set("token", data)
+        self.page.go(Routes.GROUPS_LIST.value)
 
     def on_login_error(self, message: str, exc: Exception):
         print(f"Erro no login: {message}")

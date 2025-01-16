@@ -9,9 +9,11 @@ from fazaconta_frontend.src.constants import (
     WHITE,
     Routes,
 )
+from fazaconta_frontend.src.utils import is_authenticated
 
 
 class HomeView(ft.View):
+    page: ft.Page
     is_private: bool
 
     def __init__(self, page: ft.Page, is_private: bool = False):
@@ -20,8 +22,14 @@ class HomeView(ft.View):
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             vertical_alignment=ft.MainAxisAlignment.CENTER,
         )
-        self.controls = [self._main_content(page)]
+        self.page = page
         self.is_private = is_private
+        self.controls = [self._main_content(page)]
+
+    def did_mount(self):
+        super().did_mount()
+        if is_authenticated(self.page):
+            self.page.go(Routes.GROUPS_LIST)
 
     def _main_content(self, page: ft.Page):
         return ft.Container(

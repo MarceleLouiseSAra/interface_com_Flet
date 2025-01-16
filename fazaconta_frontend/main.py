@@ -1,5 +1,9 @@
+from pydoc import ispackage
 import flet as ft
 from fazaconta_frontend.src.constants import Routes
+from fazaconta_frontend.src.utils import is_authenticated
+from fazaconta_frontend.src.views.GroupDetailsView import GroupDetailsView
+from fazaconta_frontend.src.views.GroupsListView import GroupsListView
 from fazaconta_frontend.src.views.RegisterView import RegisterView
 from fazaconta_frontend.src.views.HomeView import HomeView
 from fazaconta_frontend.src.views.LoginView import LoginView
@@ -35,6 +39,8 @@ def main(page: ft.Page):
         Routes.HOME: HomeView(page),
         Routes.LOGIN: LoginView(page),
         Routes.REGISTER: RegisterView(page),
+        Routes.GROUPS_LIST: GroupsListView(page, is_private=True),
+        Routes.GROUP_DETAILS: GroupDetailsView(page, is_private=True),
         Routes.NOT_FOUND: ViewNotFound(page),
         # "/": ft.View(
         #     route="/waiting_room_page",
@@ -80,23 +86,21 @@ def main(page: ft.Page):
         # ),
     }
 
-    def is_authenticated(page: ft.Page):
-        return page.session.get("token") is not None
-
     def route_change(route):
         page.views.clear()
 
-        view = (
-            pages.get(Routes(page.route), ViewNotFound(page))
-            if page.route in Routes
-            else None
-        )
-
-        if not view or (view.is_private and not is_authenticated(page)):
-            page.views.append(ViewNotFound(page))
+        if page.route in Routes:
+            view = pages.get(Routes(page.route), ViewNotFound(page))
+            is_unauthorized = view.is_private and not is_authenticated(page)
+            if is_unauthorized:
+                view = LoginView(page)
         else:
-            page.views.append(view)
+            if is_authenticated(page):
+                view = GroupsListView(page, is_private=True)
+            else:
+                view = ViewNotFound(page)
 
+        page.views.append(view)
         page.update()
 
     page.on_route_change = route_change
